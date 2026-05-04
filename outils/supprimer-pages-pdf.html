@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fusionner PDF — PDFPapers</title>
+  <meta name="description" content="Fusionnez plusieurs fichiers PDF en un seul document gratuitement. Rapide, sécurisé, sans installation." />
+  <link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<header>
+  <nav class="navbar" role="navigation">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="../index.html" class="logo">
+          <div class="logo-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+          </div>
+          <span class="logo-text">PDF<span>Papers</span></span>
+        </a>
+
+        <div class="nav-links">
+          <a class="nav-link active" href="../index.html#outils">Outils PDF</a>
+          <a class="nav-link" href="../index.html#tarifs">Tarifs</a>
+          <a class="nav-link" href="../index.html#fonctionnalites">Fonctionnalités</a>
+          <a class="nav-link" href="../index.html#aide">Aide</a>
+        </div>
+
+        <div class="nav-actions">
+          <button class="btn btn-secondary">Se connecter</button>
+          <button class="btn btn-primary">Commencer gratuitement</button>
+        </div>
+
+        <button class="mobile-toggle" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-menu">
+      <a href="../index.html#outils">Outils PDF</a>
+      <a href="../index.html#tarifs">Tarifs</a>
+      <a href="../index.html#aide">Aide</a>
+      <div class="mobile-menu-divider"></div>
+      <div class="mobile-menu-actions">
+        <button class="btn btn-secondary" style="width:100%;justify-content:center">Se connecter</button>
+        <button class="btn btn-primary" style="width:100%;justify-content:center">Commencer gratuitement</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- BREADCRUMB -->
+<div style="background:var(--gray-50);border-bottom:1px solid var(--gray-100)">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="../index.html">Accueil</a>
+      <span class="breadcrumb-sep">›</span>
+      <a href="../index.html#outils">Outils PDF</a>
+      <span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-current" id="breadcrumb-tool">Fusionner PDF</span>
+    </div>
+  </div>
+</div>
+
+<!-- TOOL HERO -->
+<section class="tool-hero">
+  <div class="container">
+    <div class="tool-hero-icon icon-green" id="tool-icon" style="background:var(--primary-lighter);color:var(--primary);font-size:36px">🔗</div>
+    <h1 id="tool-title">Fusionner PDF</h1>
+    <p id="tool-desc">Combinez plusieurs fichiers PDF en un seul document. Réorganisez les fichiers dans l'ordre souhaité.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <span class="badge badge-green">✓ Gratuit</span>
+      <span class="badge badge-green">✓ Sécurisé</span>
+      <span class="badge badge-green">✓ Sans installation</span>
+    </div>
+  </div>
+</section>
+
+<!-- WORKSPACE -->
+<section class="tool-workspace">
+  <div class="container" style="max-width:860px">
+    <div class="workspace-box">
+
+      <!-- Upload Zone -->
+      <div class="workspace-upload">
+        <input type="file" id="tool-file-input" accept=".pdf" multiple style="display:none" />
+
+        <div class="big-upload-zone" id="big-upload-zone">
+          <div class="big-upload-icon">
+            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <h3>Glissez vos fichiers ici</h3>
+          <p>ou cliquez pour parcourir vos fichiers</p>
+          <button class="btn btn-primary btn-lg" onclick="event.stopPropagation(); document.getElementById('tool-file-input').click()">
+            Sélectionner les fichiers
+          </button>
+          <div class="upload-formats" style="margin-top:20px">
+            <span class="format-tag" id="accepted-formats">PDF</span>
+            <span class="format-tag">Max 50 MB</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- File List -->
+      <div class="file-list" id="file-list"></div>
+
+      <!-- Processing -->
+      <div class="processing-overlay" id="processing-overlay">
+        <div class="spinner"></div>
+        <div>
+          <p style="font-weight:600;font-size:16px;margin-bottom:6px">Traitement en cours…</p>
+          <p style="color:var(--gray-400);font-size:14px">Veuillez patienter quelques secondes</p>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+        </div>
+      </div>
+
+      <!-- Success -->
+      <div class="success-state" id="success-state">
+        <div class="success-icon">✓</div>
+        <div>
+          <p style="font-weight:700;font-size:18px;margin-bottom:6px">Fichier prêt !</p>
+          <p style="color:var(--gray-400);font-size:14px">Votre fichier a été traité avec succès.</p>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+          <button class="btn btn-primary btn-lg" onclick="window.showToast('Téléchargement démarré !', 'success')">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Télécharger le fichier
+          </button>
+          <button class="btn btn-secondary reset-btn">Traiter un autre fichier</button>
+        </div>
+        <p style="font-size:12px;color:var(--gray-400)">
+          🔒 Votre fichier sera supprimé de nos serveurs dans 2 heures
+        </p>
+      </div>
+
+      <!-- Tool Options -->
+      <div class="tool-options" id="tool-options" style="display:none">
+        <div class="options-title">Options</div>
+        <div class="options-row" id="options-content">
+          <!-- Options injectées dynamiquement via JS selon l'outil -->
+        </div>
+      </div>
+
+      <!-- Actions Bar -->
+      <div class="tool-actions" id="tool-actions" style="display:none">
+        <div class="tool-actions-left">
+          <button class="add-more-btn" onclick="document.getElementById('tool-file-input').click()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+            </svg>
+            Ajouter des fichiers
+          </button>
+          <span style="font-size:13px;color:var(--gray-400)" id="file-count-label"></span>
+        </div>
+        <button class="btn btn-primary btn-lg process-btn" id="process-btn">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+          <span id="process-btn-label">Fusionner les PDF</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS (tool-specific) -->
+<section style="padding:60px 0;background:var(--gray-50)">
+  <div class="container" style="max-width:860px">
+    <h2 style="font-size:24px;font-weight:800;text-align:center;margin-bottom:36px;color:var(--gray-900)">Comment utiliser cet outil ?</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px" class="steps-grid-simple">
+
+      <div style="text-align:center;padding:28px 20px;background:white;border-radius:var(--radius-lg);border:1px solid var(--gray-100)">
+        <div style="width:48px;height:48px;background:var(--primary-lighter);color:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;margin:0 auto 16px">1</div>
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:8px;color:var(--gray-800)">Importez vos fichiers</h3>
+        <p style="font-size:13px;color:var(--gray-500);line-height:1.6" id="step1-desc">Glissez-déposez vos fichiers PDF ou cliquez pour les sélectionner depuis votre appareil.</p>
+      </div>
+
+      <div style="text-align:center;padding:28px 20px;background:white;border-radius:var(--radius-lg);border:1px solid var(--gray-100)">
+        <div style="width:48px;height:48px;background:var(--primary-lighter);color:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;margin:0 auto 16px">2</div>
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:8px;color:var(--gray-800)">Personnalisez</h3>
+        <p style="font-size:13px;color:var(--gray-500);line-height:1.6" id="step2-desc">Réorganisez les fichiers dans l'ordre souhaité. Définissez les options selon vos besoins.</p>
+      </div>
+
+      <div style="text-align:center;padding:28px 20px;background:white;border-radius:var(--radius-lg);border:1px solid var(--gray-100)">
+        <div style="width:48px;height:48px;background:var(--primary-lighter);color:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;margin:0 auto 16px">3</div>
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:8px;color:var(--gray-800)">Téléchargez</h3>
+        <p style="font-size:13px;color:var(--gray-500);line-height:1.6">Cliquez sur le bouton de traitement et téléchargez votre fichier résultant en quelques secondes.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- RELATED TOOLS -->
+<section class="related-tools">
+  <div class="container">
+    <h2 style="font-size:22px;font-weight:800;margin-bottom:24px;color:var(--gray-800)">Outils similaires</h2>
+    <div class="related-tools-grid">
+      <a class="related-tool-item" href="fusionner-pdf.html"><span>🔗</span> Fusionner PDF</a>
+      <a class="related-tool-item" href="diviser-pdf.html"><span>✂️</span> Diviser PDF</a>
+      <a class="related-tool-item" href="compresser-pdf.html"><span>🗜️</span> Compresser PDF</a>
+      <a class="related-tool-item" href="faire-pivoter-pdf.html"><span>🔄</span> Faire pivoter PDF</a>
+      <a class="related-tool-item" href="pdf-en-word.html"><span>📝</span> PDF en Word</a>
+      <a class="related-tool-item" href="word-en-pdf.html"><span>📄</span> Word en PDF</a>
+      <a class="related-tool-item" href="proteger-pdf.html"><span>🔒</span> Protéger PDF</a>
+      <a class="related-tool-item" href="signer-pdf.html"><span>✍️</span> Signer PDF</a>
+      <a class="related-tool-item" href="pdf-en-jpg.html"><span>🖼️</span> PDF en JPG</a>
+      <a class="related-tool-item" href="ocr-pdf.html"><span>🔍</span> OCR PDF</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="../index.html" class="logo" style="margin-bottom:16px;display:inline-flex">
+          <div class="logo-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+          </div>
+          <span class="logo-text" style="color:#fff">PDF<span style="color:#4ADE80">Papers</span></span>
+        </a>
+        <p class="footer-tagline">La plateforme PDF la plus complète et sécurisée.</p>
+        <div class="footer-socials">
+          <a class="social-btn" href="#" aria-label="Twitter">𝕏</a>
+          <a class="social-btn" href="#" aria-label="LinkedIn">in</a>
+          <a class="social-btn" href="#" aria-label="Facebook">f</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-col-title">Outils PDF</h4>
+        <div class="footer-links">
+          <a href="fusionner-pdf.html">Fusionner PDF</a>
+          <a href="diviser-pdf.html">Diviser PDF</a>
+          <a href="compresser-pdf.html">Compresser PDF</a>
+          <a href="editer-pdf.html">Éditer PDF</a>
+          <a href="signer-pdf.html">Signer PDF</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-col-title">Convertir</h4>
+        <div class="footer-links">
+          <a href="pdf-en-word.html">PDF en Word</a>
+          <a href="pdf-en-excel.html">PDF en Excel</a>
+          <a href="pdf-en-jpg.html">PDF en JPG</a>
+          <a href="word-en-pdf.html">Word en PDF</a>
+          <a href="jpg-en-pdf.html">JPG en PDF</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-col-title">Entreprise</h4>
+        <div class="footer-links">
+          <a href="#">À propos</a>
+          <a href="#">API</a>
+          <a href="../index.html#tarifs">Tarifs</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-col-title">Support</h4>
+        <div class="footer-links">
+          <a href="#">Centre d'aide</a>
+          <a href="#">Confidentialité</a>
+          <a href="#">CGU</a>
+          <a href="#">Cookies</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 PDFPapers. Tous droits réservés.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Confidentialité</a>
+        <a href="#">CGU</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button class="back-to-top" title="Retour en haut" style="position:fixed;bottom:24px;right:24px;width:44px;height:44px;background:var(--primary);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(22,163,74,0.4);transition:all 0.3s;opacity:0;pointer-events:none;z-index:999">
+  <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+<div class="toast-container"></div>
+
+<script src="../assets/js/main.js"></script>
+<script>
+// ── Tool Configuration ──────────────────────────────────────────
+// Each tool page sets its own config by modifying this object
+// or by passing URL params: tool.html?tool=compresser-pdf
+
+const TOOL_CONFIG = {
+  'fusionner-pdf': {
+    title: 'Fusionner PDF',
+    icon: '🔗',
+    desc: 'Combinez plusieurs fichiers PDF en un seul document. Réorganisez les fichiers dans l\'ordre souhaité.',
+    accept: '.pdf',
+    formats: ['PDF'],
+    multiple: true,
+    btnLabel: 'Fusionner les PDF',
+    step2: 'Réorganisez les fichiers dans l\'ordre souhaité.',
+    options: `
+      <div class="option-group">
+        <div class="option-label">Orientation des pages</div>
+        <div class="option-radio-group">
+          <div class="option-radio selected" data-val="portrait">Portrait</div>
+          <div class="option-radio" data-val="landscape">Paysage</div>
+        </div>
+      </div>
+    `
+  },
+  'compresser-pdf': {
+    title: 'Compresser PDF',
+    icon: '🗜️',
+    desc: 'Réduisez la taille de votre PDF tout en conservant une qualité optimale.',
+    accept: '.pdf',
+    formats: ['PDF'],
+    multiple: false,
+    btnLabel: 'Compresser le PDF',
+    step2: 'Choisissez le niveau de compression selon vos besoins.',
+    options: `
+      <div class="option-group">
+        <div class="option-label">Niveau de compression</div>
+        <div class="option-radio-group">
+          <div class="option-radio" data-val="low">Légère</div>
+          <div class="option-radio selected" data-val="medium">Recommandée</div>
+          <div class="option-radio" data-val="high">Maximum</div>
+        </div>
+      </div>
+    `
+  },
+  'diviser-pdf': {
+    title: 'Diviser PDF',
+    icon: '✂️',
+    desc: 'Divisez votre PDF en plusieurs fichiers ou extrayez des pages spécifiques.',
+    accept: '.pdf',
+    formats: ['PDF'],
+    multiple: false,
+    btnLabel: 'Diviser le PDF',
+    step2: 'Indiquez les pages ou plages à extraire (ex : 1-3, 5, 7-9).',
+    options: `
+      <div class="option-group">
+        <div class="option-label">Mode de division</div>
+        <div class="option-radio-group">
+          <div class="option-radio selected" data-val="range">Par plage</div>
+          <div class="option-radio" data-val="every">Chaque page</div>
+          <div class="option-radio" data-val="extract">Extraire</div>
+        </div>
+      </div>
+      <div class="option-group">
+        <div class="option-label">Pages (ex: 1-3,5)</div>
+        <input type="text" placeholder="1-3, 5, 7-9" style="padding:8px 12px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:13px;outline:none;font-family:inherit" />
+      </div>
+    `
+  },
+  'pdf-en-word': {
+    title: 'PDF en Word',
+    icon: '📝',
+    desc: 'Convertissez votre PDF en document Word (.docx) entièrement modifiable, mise en forme préservée.',
+    accept: '.pdf',
+    formats: ['PDF'],
+    multiple: false,
+    btnLabel: 'Convertir en Word',
+    step2: 'Choisissez le format de sortie souhaité.',
+    options: `
+      <div class="option-group">
+        <div class="option-label">Format de sortie</div>
+        <div class="option-radio-group">
+          <div class="option-radio selected" data-val="docx">.DOCX</div>
+          <div class="option-radio" data-val="doc">.DOC</div>
+          <div class="option-radio" data-val="rtf">.RTF</div>
+        </div>
+      </div>
+    `
+  },
+  'word-en-pdf': {
+    title: 'Word en PDF',
+    icon: '📄',
+    desc: 'Convertissez vos fichiers Word (.doc, .docx) en PDF de haute qualité en quelques secondes.',
+    accept: '.doc,.docx',
+    formats: ['DOC', 'DOCX'],
+    multiple: true,
+    btnLabel: 'Convertir en PDF',
+    step2: 'Choisissez la qualité et l\'orientation souhaités.',
+    options: `
+      <div class="option-group">
+        <div class="option-label">Qualité</div>
+        <div class="option-radio-group">
+          <div class="option-radio" data-val="screen">Web</div>
+          <div class="option-radio selected" data-val="print">Impression</div>
+          <div class="option-radio" data-val="prepress">Prépresse</div>
+        </div>
+      </div>
+    `
+  },
+  'jpg-en-pdf': {
+    title: 'JPG en PDF',
+    icon: '🖼️',
+    desc: 'Convertissez vos images JPG, PNG ou WebP en un fichier PDF compact et professionnel.',
+    accept: '.jpg,.jpeg,.png,.webp,.bmp,.gif',
+    formats: ['JPG', 'PNG', 'WebP'],
+    multiple: true,
+    btnLabel: 'Convertir en PDF',
+    step2: 'Choisissez la mise en page et l\'orientation des images.',
+    options: `
+      <div class="option-group">
+        <div class="option-label">Orientation</div>
+        <div class="option-radio-group">
+          <div class="option-radio selected" data-val="portrait">Portrait</div>
+          <div class="option-radio" data-val="landscape">Paysage</div>
+        </div>
+      </div>
+      <div class="option-group">
+        <div class="option-label">Taille de page</div>
+        <select class="option-select">
+          <option>A4</option><option>A3</option><option>Letter</option><option>Legal</option>
+        </select>
+      </div>
+    `
+  },
+  'pdf-en-jpg': {
+    title: 'PDF en JPG',
+    icon: '🖼️',
+    desc: 'Convertissez chaque page de votre PDF en image JPG de haute qualité.',
+    accept: '.pdf',
+    formats: ['PDF'],
+    multiple: false,
+    btnLabel: 'Convertir en JPG',
+    step2: 'Choisissez la qualité et la résolution des images.',
+    options: `
+      <div class="option-group">
+        <div class="option-label">Qualité d'image</div>
+        <div class="option-radio-group">
+          <div class="option-radio" data-val="low">Basse</div>
+          <div class="option-radio selected" data-val="medium">Moyenne</div>
+          <div class="option-radio" data-val="high">Haute</div>
+        </div>
+      </div>
+      <div class="option-group">
+        <div class="option-label">Résolution (DPI)</div>
+        <select class="option-select">
+          <option>72 DPI</option><option>150 DPI</option><option selected>300 DPI</option><option>600 DPI</option>
+        </select>
+      </div>
+    `
+  },
+  'proteger-pdf': {
+    title: 'Protéger PDF',
+    icon: '🔒',
+    desc: 'Sécurisez votre PDF avec un mot de passe pour en contrôler l\'accès et les permissions.',
+    accept: '.pdf',
+    formats: ['PDF'],
+    multiple: false,
+    btnLabel: 'Protéger le PDF',
+    step2: 'Définissez un mot de passe et les permissions souhaitées.',
+    options: `
+      <div class="option-group">
+        <div class="option-label">Mot de passe</div>
+        <input type="password" placeholder="Entrez un mot de passe..." style="padding:8px 12px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:13px;outline:none;font-family:inherit" />
+      </div>
+      <div class="option-group">
+        <div class="option-label">Permissions</div>
+        <div class="option-radio-group">
+          <div class="option-radio selected" data-val="all">Toutes</div>
+          <div class="option-radio" data-val="no-print">Pas d'impression</div>
+          <div class="option-radio" data-val="read-only">Lecture seule</div>
+        </div>
+      </div>
+    `
+  },
+  'signer-pdf': {
+    title: 'Signer PDF',
+    icon: '✍️',
+    desc: 'Ajoutez votre signature électronique à vos documents PDF facilement et légalement.',
+    accept: '.pdf',
+    formats: ['PDF'],
+    multiple: false,
+    btnLabel: 'Signer le PDF',
+    step2: 'Dessinez, tapez ou téléchargez votre signature.',
+    options: `
+      <div class="option-group">
+        <div class="option-label">Type de signature</div>
+        <div class="option-radio-group">
+          <div class="option-radio selected" data-val="draw">Dessiner</div>
+          <div class="option-radio" data-val="type">Taper</div>
+          <div class="option-radio" data-val="upload">Importer</div>
+        </div>
+      </div>
+    `
+  },
+  'faire-pivoter-pdf': {
+    title: 'Faire pivoter PDF',
+    icon: '🔄',
+    desc: 'Corrigez l\'orientation de vos pages PDF facilement.',
+    accept: '.pdf',
+    formats: ['PDF'],
+    multiple: false,
+    btnLabel: 'Pivoter le PDF',
+    step2: 'Choisissez les pages et l\'angle de rotation.',
+    options: `
+      <div class="option-group">
+        <div class="option-label">Rotation</div>
+        <div class="option-radio-group">
+          <div class="option-radio selected" data-val="90">90° droite</div>
+          <div class="option-radio" data-val="-90">90° gauche</div>
+          <div class="option-radio" data-val="180">180°</div>
+        </div>
+      </div>
+      <div class="option-group">
+        <div class="option-label">Pages</div>
+        <div class="option-radio-group">
+          <div class="option-radio selected" data-val="all">Toutes</div>
+          <div class="option-radio" data-val="odd">Impaires</div>
+          <div class="option-radio" data-val="even">Paires</div>
+        </div>
+      </div>
+    `
+  },
+};
+
+// ── Apply config based on current page filename or URL param ──
+(function applyToolConfig() {
+  const params = new URLSearchParams(window.location.search);
+  let toolKey = params.get('tool');
+
+  if (!toolKey) {
+    // Detect from filename
+    const filename = window.location.pathname.split('/').pop().replace('.html', '');
+    toolKey = filename in TOOL_CONFIG ? filename : 'fusionner-pdf';
+  }
+
+  const config = TOOL_CONFIG[toolKey] || TOOL_CONFIG['fusionner-pdf'];
+
+  // Apply to DOM
+  document.title = `${config.title} — PDFPapers`;
+  document.querySelector('meta[name="description"]').content = config.desc;
+  document.getElementById('tool-title').textContent = config.title;
+  document.getElementById('tool-desc').textContent = config.desc;
+  document.getElementById('tool-icon').textContent = config.icon;
+  document.getElementById('breadcrumb-tool').textContent = config.title;
+  document.getElementById('process-btn-label').textContent = config.btnLabel;
+  document.getElementById('step2-desc').textContent = config.step2;
+  document.getElementById('options-content').innerHTML = config.options;
+
+  // File input accept + multiple
+  const input = document.getElementById('tool-file-input');
+  input.accept = config.accept;
+  input.multiple = config.multiple;
+
+  // Accepted formats tags
+  const formatsEl = document.getElementById('accepted-formats');
+  formatsEl.innerHTML = config.formats.map(f => `<span class="format-tag">${f}</span>`).join('');
+})();
+</script>
+</body>
+</html>

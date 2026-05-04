@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — PDFPapers</title>
+  <meta name="description" content="Contactez l'équipe PDFPapers. Support, questions, partenariats — nous répondons sous 24h." />
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    .contact-hero {
+      background: linear-gradient(160deg, #F0FDF4 0%, #DCFCE7 50%, #fff 100%);
+      padding: 72px 0 56px;
+      text-align: center;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 48px;
+      align-items: start;
+      padding: 64px 0 80px;
+    }
+    .contact-info-card {
+      background: var(--white);
+      border: 1px solid var(--gray-100);
+      border-radius: var(--radius-xl);
+      padding: 36px 32px;
+      box-shadow: var(--shadow-md);
+    }
+    .contact-info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .contact-info-item:last-child { border-bottom: none; }
+    .contact-info-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--primary-lighter);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .contact-info-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--gray-400); margin-bottom: 4px; }
+    .contact-info-value { font-size: 15px; font-weight: 600; color: var(--gray-800); }
+    .contact-info-sub { font-size: 13px; color: var(--gray-400); margin-top: 2px; }
+
+    .contact-form-card {
+      background: var(--white);
+      border: 1px solid var(--gray-100);
+      border-radius: var(--radius-xl);
+      padding: 40px 36px;
+      box-shadow: var(--shadow-md);
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
+    .form-label { font-size: 13px; font-weight: 600; color: var(--gray-700); }
+    .form-input, .form-textarea, .form-select {
+      padding: 12px 16px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--gray-800);
+      background: var(--white);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(22,163,74,0.1); }
+    .form-textarea { resize: vertical; min-height: 140px; line-height: 1.6; }
+    .form-hint { font-size: 12px; color: var(--gray-400); }
+    .form-submit { width: 100%; padding: 14px; font-size: 15px; font-weight: 700; justify-content: center; }
+
+    .faq-mini { background: var(--gray-50); padding: 64px 0; }
+    .faq-mini-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; max-width: 900px; margin: 0 auto; }
+    .faq-mini-card { background: white; border-radius: var(--radius-lg); padding: 24px; border: 1px solid var(--gray-100); }
+    .faq-mini-q { font-size: 15px; font-weight: 700; color: var(--gray-800); margin-bottom: 8px; }
+    .faq-mini-a { font-size: 13px; color: var(--gray-500); line-height: 1.65; }
+
+    @media(max-width:768px) {
+      .contact-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .faq-mini-grid { grid-template-columns: 1fr; }
+      .contact-form-card { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<header>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+          </div>
+          <span class="logo-text">PDF<span>Papers</span></span>
+        </a>
+        <div class="nav-links">
+          <a class="nav-link" href="index.html#outils">Outils PDF</a>
+          <a class="nav-link" href="index.html#tarifs">Tarifs</a>
+          <a class="nav-link" href="index.html#fonctionnalites">Fonctionnalités</a>
+          <a class="nav-link active" href="contact.html">Contact</a>
+        </div>
+        <div class="nav-actions">
+          <button class="btn btn-secondary">Se connecter</button>
+          <button class="btn btn-primary">Commencer gratuitement</button>
+        </div>
+        <button class="mobile-toggle" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-menu">
+      <a href="index.html#outils">Outils PDF</a>
+      <a href="index.html#tarifs">Tarifs</a>
+      <a href="contact.html">Contact</a>
+      <div class="mobile-menu-divider"></div>
+      <div class="mobile-menu-actions">
+        <button class="btn btn-secondary" style="width:100%;justify-content:center">Se connecter</button>
+        <button class="btn btn-primary" style="width:100%;justify-content:center">Commencer gratuitement</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="contact-hero">
+  <div class="container">
+    <div style="display:inline-flex;align-items:center;gap:8px;background:var(--primary-lighter);color:var(--primary-dark);padding:8px 18px;border-radius:9999px;font-size:13px;font-weight:600;margin-bottom:24px;border:1px solid rgba(22,163,74,0.2)">
+      💬 Nous répondons sous 24h
+    </div>
+    <h1 style="font-size:clamp(32px,5vw,52px);font-weight:800;letter-spacing:-1px;margin-bottom:14px;color:var(--gray-900)">
+      Contactez-nous
+    </h1>
+    <p style="font-size:17px;color:var(--gray-500);max-width:480px;margin:0 auto">
+      Une question, un problème ou une suggestion ? Notre équipe est là pour vous aider.
+    </p>
+  </div>
+</section>
+
+<!-- CONTACT GRID -->
+<div style="background:var(--gray-50)">
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- Left: Info -->
+      <div>
+        <div class="contact-info-card">
+          <h2 style="font-size:19px;font-weight:800;color:var(--gray-900);margin-bottom:4px">Informations de contact</h2>
+          <p style="font-size:13px;color:var(--gray-400);margin-bottom:20px">Plusieurs façons de nous joindre.</p>
+
+          <div class="contact-info-item">
+            <div class="contact-info-icon">📧</div>
+            <div>
+              <div class="contact-info-label">Email</div>
+              <div class="contact-info-value">support@pdfpapers.com</div>
+              <div class="contact-info-sub">Réponse sous 24h ouvrées</div>
+            </div>
+          </div>
+
+          <div class="contact-info-item">
+            <div class="contact-info-icon">💬</div>
+            <div>
+              <div class="contact-info-label">Chat en direct</div>
+              <div class="contact-info-value">Disponible en bas à droite</div>
+              <div class="contact-info-sub">Lun–Ven, 9h–18h (CET)</div>
+            </div>
+          </div>
+
+          <div class="contact-info-item">
+            <div class="contact-info-icon">📚</div>
+            <div>
+              <div class="contact-info-label">Centre d'aide</div>
+              <div class="contact-info-value">help.pdfpapers.com</div>
+              <div class="contact-info-sub">Tutoriels et FAQ détaillée</div>
+            </div>
+          </div>
+
+          <div class="contact-info-item">
+            <div class="contact-info-icon">🤝</div>
+            <div>
+              <div class="contact-info-label">Partenariats & API</div>
+              <div class="contact-info-value">partners@pdfpapers.com</div>
+              <div class="contact-info-sub">Pour intégrations et affiliation</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social -->
+        <div style="margin-top:24px;background:white;border:1px solid var(--gray-100);border-radius:var(--radius-xl);padding:28px 32px;box-shadow:var(--shadow-sm)">
+          <h3 style="font-size:15px;font-weight:700;color:var(--gray-800);margin-bottom:16px">Suivez-nous</h3>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a href="#" style="display:flex;align-items:center;gap:8px;padding:10px 16px;border:1.5px solid var(--gray-200);border-radius:9999px;font-size:13px;font-weight:500;color:var(--gray-700);transition:all 0.2s;text-decoration:none" onmouseover="this.style.borderColor='var(--primary)';this.style.color='var(--primary)'" onmouseout="this.style.borderColor='var(--gray-200)';this.style.color='var(--gray-700)'">𝕏 Twitter</a>
+            <a href="#" style="display:flex;align-items:center;gap:8px;padding:10px 16px;border:1.5px solid var(--gray-200);border-radius:9999px;font-size:13px;font-weight:500;color:var(--gray-700);transition:all 0.2s;text-decoration:none" onmouseover="this.style.borderColor='var(--primary)';this.style.color='var(--primary)'" onmouseout="this.style.borderColor='var(--gray-200)';this.style.color='var(--gray-700)'">in LinkedIn</a>
+            <a href="#" style="display:flex;align-items:center;gap:8px;padding:10px 16px;border:1.5px solid var(--gray-200);border-radius:9999px;font-size:13px;font-weight:500;color:var(--gray-700);transition:all 0.2s;text-decoration:none" onmouseover="this.style.borderColor='var(--primary)';this.style.color='var(--primary)'" onmouseout="this.style.borderColor='var(--gray-200)';this.style.color='var(--gray-700)'">f Facebook</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Form -->
+      <div class="contact-form-card">
+        <h2 style="font-size:20px;font-weight:800;color:var(--gray-900);margin-bottom:6px">Envoyez-nous un message</h2>
+        <p style="font-size:14px;color:var(--gray-400);margin-bottom:28px">Remplissez le formulaire ci-dessous et nous vous répondrons rapidement.</p>
+
+        <form id="contact-form" onsubmit="handleContactSubmit(event)" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="first-name">Prénom <span style="color:#DC2626">*</span></label>
+              <input class="form-input" type="text" id="first-name" name="first_name" placeholder="Jean" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="last-name">Nom <span style="color:#DC2626">*</span></label>
+              <input class="form-input" type="text" id="last-name" name="last_name" placeholder="Dupont" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="email">Email <span style="color:#DC2626">*</span></label>
+            <input class="form-input" type="email" id="email" name="email" placeholder="jean.dupont@email.com" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="company">Entreprise</label>
+            <input class="form-input" type="text" id="company" name="company" placeholder="Votre entreprise (optionnel)" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="subject">Sujet <span style="color:#DC2626">*</span></label>
+            <select class="form-select" id="subject" name="subject" required>
+              <option value="">— Choisissez un sujet —</option>
+              <option value="support">Support technique</option>
+              <option value="billing">Facturation &amp; abonnement</option>
+              <option value="feature">Suggestion de fonctionnalité</option>
+              <option value="partnership">Partenariat &amp; API</option>
+              <option value="press">Presse &amp; médias</option>
+              <option value="other">Autre</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="message">Message <span style="color:#DC2626">*</span></label>
+            <textarea class="form-textarea" id="message" name="message" placeholder="Décrivez votre question ou problème en détail..." required></textarea>
+            <div class="form-hint">Minimum 20 caractères</div>
+          </div>
+
+          <div class="form-group" style="flex-direction:row;align-items:flex-start;gap:10px;margin-bottom:24px">
+            <input type="checkbox" id="privacy" name="privacy" required style="margin-top:3px;accent-color:var(--primary);width:16px;height:16px;cursor:pointer;flex-shrink:0" />
+            <label for="privacy" style="font-size:13px;color:var(--gray-500);cursor:pointer;line-height:1.5">
+              J'accepte la <a href="#" style="color:var(--primary);font-weight:600">politique de confidentialité</a> et consens au traitement de mes données pour répondre à ma demande.
+            </label>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn btn-primary form-submit" id="submit-btn">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+            Envoyer le message
+          </button>
+
+          <!-- Success message (hidden by default) -->
+          <div id="form-success" style="display:none;margin-top:20px;background:var(--primary-lighter);border:1px solid rgba(22,163,74,0.3);border-radius:var(--radius-md);padding:20px 24px;text-align:center">
+            <div style="font-size:28px;margin-bottom:8px">✅</div>
+            <p style="font-weight:700;color:var(--primary-dark);font-size:16px;margin-bottom:4px">Message envoyé !</p>
+            <p style="font-size:13px;color:var(--gray-500)">Merci pour votre message. Nous vous répondrons dans les 24 heures ouvrées.</p>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MINI FAQ -->
+<section class="faq-mini">
+  <div class="container">
+    <div class="section-header" style="margin-bottom:40px">
+      <span class="section-label">Support</span>
+      <h2 class="section-title">Questions fréquentes</h2>
+    </div>
+    <div class="faq-mini-grid">
+      <div class="faq-mini-card">
+        <div class="faq-mini-q">Comment puis-je annuler mon abonnement ?</div>
+        <div class="faq-mini-a">Vous pouvez annuler votre abonnement à tout moment depuis votre tableau de bord, section "Mon compte → Abonnement". L'annulation prend effet à la fin de la période en cours.</div>
+      </div>
+      <div class="faq-mini-card">
+        <div class="faq-mini-q">Mes fichiers sont-ils vraiment supprimés après traitement ?</div>
+        <div class="faq-mini-a">Oui, tous vos fichiers sont automatiquement et définitivement supprimés de nos serveurs après 2 heures (plan gratuit) ou 24 heures (plan Pro). Vous pouvez aussi les supprimer manuellement.</div>
+      </div>
+      <div class="faq-mini-card">
+        <div class="faq-mini-q">Proposez-vous une API pour développeurs ?</div>
+        <div class="faq-mini-a">Oui, notre API REST est disponible pour les clients Business. Contactez-nous à partners@pdfpapers.com pour la documentation et les clés d'API.</div>
+      </div>
+      <div class="faq-mini-card">
+        <div class="faq-mini-q">Y a-t-il une application mobile PDFPapers ?</div>
+        <div class="faq-mini-a">Notre site web est entièrement optimisé pour mobile et fonctionne parfaitement sur iOS et Android. Une application native est en cours de développement.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo" style="margin-bottom:16px;display:inline-flex">
+          <div class="logo-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+          </div>
+          <span class="logo-text" style="color:#fff">PDF<span style="color:#4ADE80">Papers</span></span>
+        </a>
+        <p class="footer-tagline">La plateforme PDF la plus complète et sécurisée pour particuliers et professionnels.</p>
+        <div class="footer-socials">
+          <a class="social-btn" href="#" aria-label="Twitter">𝕏</a>
+          <a class="social-btn" href="#" aria-label="LinkedIn">in</a>
+          <a class="social-btn" href="#" aria-label="Facebook">f</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-col-title">Outils PDF</h4>
+        <div class="footer-links">
+          <a href="outils/fusionner-pdf.html">Fusionner PDF</a>
+          <a href="outils/diviser-pdf.html">Diviser PDF</a>
+          <a href="outils/compresser-pdf.html">Compresser PDF</a>
+          <a href="outils/editer-pdf.html">Éditer PDF</a>
+          <a href="outils/signer-pdf.html">Signer PDF</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-col-title">Convertir</h4>
+        <div class="footer-links">
+          <a href="outils/pdf-en-word.html">PDF en Word</a>
+          <a href="outils/pdf-en-excel.html">PDF en Excel</a>
+          <a href="outils/pdf-en-jpg.html">PDF en JPG</a>
+          <a href="outils/word-en-pdf.html">Word en PDF</a>
+          <a href="outils/jpg-en-pdf.html">JPG en PDF</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-col-title">Entreprise</h4>
+        <div class="footer-links">
+          <a href="#">À propos</a>
+          <a href="#">API</a>
+          <a href="index.html#tarifs">Tarifs</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-col-title">Support</h4>
+        <div class="footer-links">
+          <a href="#">Centre d'aide</a>
+          <a href="#">Confidentialité</a>
+          <a href="#">CGU</a>
+          <a href="#">Cookies</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 PDFPapers. Tous droits réservés.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Confidentialité</a>
+        <a href="#">CGU</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button class="back-to-top" title="Retour en haut" style="position:fixed;bottom:24px;right:24px;width:44px;height:44px;background:var(--primary);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(22,163,74,0.4);transition:all 0.3s;opacity:0;pointer-events:none;z-index:999">
+  <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+<div class="toast-container"></div>
+
+<script src="assets/js/main.js"></script>
+<script>
+function handleContactSubmit(e) {
+  e.preventDefault();
+  const form = document.getElementById('contact-form');
+  const btn = document.getElementById('submit-btn');
+  const successEl = document.getElementById('form-success');
+
+  // Basic validation
+  const firstName = document.getElementById('first-name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const subject = document.getElementById('subject').value;
+  const message = document.getElementById('message').value.trim();
+  const privacy = document.getElementById('privacy').checked;
+
+  if (!firstName || !email || !subject || message.length < 20 || !privacy) {
+    window.showToast('Veuillez remplir tous les champs obligatoires.', 'error');
+    return;
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    window.showToast('Veuillez entrer une adresse email valide.', 'error');
+    return;
+  }
+
+  // Simulate sending
+  btn.disabled = true;
+  btn.innerHTML = '<div style="width:18px;height:18px;border:2px solid rgba(255,255,255,0.4);border-top-color:white;border-radius:50%;animation:spin 0.8s linear infinite"></div> Envoi en cours…';
+
+  setTimeout(() => {
+    form.querySelectorAll('input,textarea,select,button').forEach(el => el.disabled = true);
+    successEl.style.display = 'block';
+    successEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    window.showToast('Message envoyé avec succès !', 'success');
+  }, 1800);
+}
+</script>
+</body>
+</html>
