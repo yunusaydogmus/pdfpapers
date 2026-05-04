@@ -221,6 +221,7 @@ const initToolPage = () => {
   if (!bigUpload || !toolInput) return;
 
   let files = [];
+  window._toolFiles = files; // Expose pour pdf-tools.js
 
   // Check for pending file from index page
   const pendingFile = sessionStorage.getItem('pendingFile');
@@ -261,11 +262,7 @@ const initToolPage = () => {
 
   function addFileToList(file) {
     files.push(file);
-    renderFileList();
-  }
-
-  function removeFile(index) {
-    files.splice(index, 1);
+    window._toolFiles = files; // Sync avec pdf-tools.js
     renderFileList();
   }
 
@@ -310,52 +307,31 @@ const initToolPage = () => {
     });
 
     // Show options & action bar
-    document.querySelector('.tool-options')?.classList.add('visible');
-    document.querySelector('.tool-actions')?.classList.add('visible');
+    const optEl = document.getElementById('tool-options');
+    const actEl = document.getElementById('tool-actions');
+    const cntLbl = document.getElementById('file-count-label');
+    if (optEl) optEl.style.display = 'block';
+    if (actEl) actEl.style.display = 'flex';
+    if (cntLbl) cntLbl.textContent = `${files.length} fichier${files.length > 1 ? 's' : ''} sélectionné${files.length > 1 ? 's' : ''}`;
   }
 
-  // Process button
-  processBtn?.addEventListener('click', () => {
-    if (files.length === 0) {
-      showToast('Veuillez ajouter au moins un fichier.', 'error');
-      return;
-    }
-    startProcessing();
-  });
-
-  function startProcessing() {
-    if (!processingOverlay) return;
-
-    fileList.style.display = 'none';
-    document.querySelector('.tool-options').style.display = 'none';
-    document.querySelector('.tool-actions').style.display = 'none';
-    processingOverlay.classList.add('active');
-
-    // Simulate progress
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += Math.random() * 15 + 5;
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
-        setTimeout(showSuccess, 400);
-      }
-      if (progressBar) progressBar.style.width = progress + '%';
-    }, 300);
-  }
-
-  function showSuccess() {
-    if (!processingOverlay || !successState) return;
-    processingOverlay.classList.remove('active');
-    successState.classList.add('active');
+  function removeFile(index) {
+    files.splice(index, 1);
+    window._toolFiles = files;
+    renderFileList();
   }
 
   // Reset button (in success state)
   document.querySelector('.reset-btn')?.addEventListener('click', () => {
     files = [];
+    window._toolFiles = files;
     if (successState) successState.classList.remove('active');
     if (processingOverlay) processingOverlay.classList.remove('active');
     bigUpload.style.display = 'block';
+    const optEl = document.getElementById('tool-options');
+    const actEl = document.getElementById('tool-actions');
+    if (optEl) optEl.style.display = 'none';
+    if (actEl) actEl.style.display = 'none';
     if (fileList) { fileList.classList.remove('has-files'); fileList.innerHTML = ''; }
     if (progressBar) progressBar.style.width = '0%';
   });

@@ -306,7 +306,19 @@
 </button>
 <div class="toast-container"></div>
 
+<!-- CDN : pdf-lib, PDF.js, JSZip -->
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script>
+  // PDF.js worker
+  const _pdfScript = document.createElement('script');
+  _pdfScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+  _pdfScript.onload = () => { pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; };
+  document.head.appendChild(_pdfScript);
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="../assets/js/main.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/pdf-tools.js"></script>
 <script>
 // ── Tool Configuration ──────────────────────────────────────────
 // Each tool page sets its own config by modifying this object
