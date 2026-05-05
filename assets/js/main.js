@@ -209,131 +209,127 @@ const initPricingToggle = () => {
 // TOOL PAGE - UPLOAD & FILE MANAGEMENT
 // ============================================
 const initToolPage = () => {
-  const bigUpload = document.querySelector('.big-upload-zone');
-  const toolInput = document.getElementById('tool-file-input');
-  const fileList = document.querySelector('.file-list');
-  const processBtn = document.querySelector('.process-btn');
-  const addMoreBtn = document.querySelector('.add-more-btn');
-  const processingOverlay = document.querySelector('.processing-overlay');
-  const successState = document.querySelector('.success-state');
-  const progressBar = document.querySelector('.progress-bar');
+  const bigUpload    = document.querySelector('.big-upload-zone');
+  const toolInput    = document.getElementById('tool-file-input');
+  const fileList     = document.getElementById('file-list');
+  const addMoreBtn   = document.querySelector('.add-more-btn');
+  const processingOv = document.getElementById('processing-overlay');
+  const successState = document.getElementById('success-state');
+  const progressBar  = document.getElementById('progress-bar');
+  // ← Bug fix : on cache le conteneur parent, pas juste le dashed-zone
+  const uploadArea   = document.querySelector('.workspace-upload');
 
   if (!bigUpload || !toolInput) return;
 
   let files = [];
-  window._toolFiles = files; // Expose pour pdf-tools.js
+  window._toolFiles = files;
 
-  // Check for pending file from index page
-  const pendingFile = sessionStorage.getItem('pendingFile');
-  if (pendingFile) {
-    sessionStorage.removeItem('pendingFile');
-    const pf = JSON.parse(pendingFile);
-    addFileToList({ name: pf.name, size: pf.size });
+  // Pending file from homepage redirect
+  const pending = sessionStorage.getItem('pendingFile');
+  if (pending) {
+    try {
+      sessionStorage.removeItem('pendingFile');
+      const pf = JSON.parse(pending);
+      addFileToList({ name: pf.name, size: pf.size || 0 });
+    } catch(e) { /* ignore */ }
   }
 
-  // Click to upload
+  // Click on upload area
   bigUpload.addEventListener('click', () => toolInput.click());
-  addMoreBtn?.addEventListener('click', () => toolInput.click());
+  addMoreBtn?.addEventListener('click', (e) => { e.stopPropagation(); toolInput.click(); });
 
-  // Drag & drop
-  ['dragenter', 'dragover'].forEach(ev =>
-    bigUpload.addEventListener(ev, (e) => {
-      e.preventDefault();
-      bigUpload.classList.add('dragging');
-    })
-  );
-
-  ['dragleave', 'drop'].forEach(ev =>
-    bigUpload.addEventListener(ev, (e) => {
-      e.preventDefault();
-      bigUpload.classList.remove('dragging');
-    })
-  );
-
+  // Drag & drop visual
+  bigUpload.addEventListener('dragover',  (e) => { e.preventDefault(); bigUpload.classList.add('dragging'); });
+  bigUpload.addEventListener('dragleave', ()  => bigUpload.classList.remove('dragging'));
   bigUpload.addEventListener('drop', (e) => {
-    const droppedFiles = Array.from(e.dataTransfer.files);
-    droppedFiles.forEach(f => addFileToList(f));
+    e.preventDefault();
+    bigUpload.classList.remove('dragging');
+    Array.from(e.dataTransfer.files).forEach(addFileToList);
   });
 
+  // File input change
   toolInput.addEventListener('change', () => {
-    Array.from(toolInput.files).forEach(f => addFileToList(f));
-    toolInput.value = ''; // reset
+    Array.from(toolInput.files).forEach(addFileToList);
+    toolInput.value = '';
   });
 
   function addFileToList(file) {
     files.push(file);
-    window._toolFiles = files; // Sync avec pdf-tools.js
-    renderFileList();
+    window._toolFiles = files;
+    render();
   }
 
-  function renderFileList() {
+  function removeFileAt(index) {
+    files.splice(index, 1);
+    window._toolFiles = files;
+    render();
+  }
+
+  function render() {
     if (!fileList) return;
     fileList.innerHTML = '';
 
     if (files.length === 0) {
-      fileList.classList.remove('has-files');
-      bigUpload.style.display = 'block';
+      // Afficher la zone d'upload, cacher le reste
+      if (uploadArea) uploadArea.style.display = '';
+      fileList.style.display = 'none';
+      const optEl = document.getElementById('tool-options');
+      const actEl = document.getElementById('tool-actions');
+      if (optEl) optEl.style.display = 'none';
+      if (actEl) actEl.style.display = 'none';
       return;
     }
 
-    fileList.classList.add('has-files');
-    bigUpload.style.display = 'none';
+    // ── Cacher la zone d'upload, montrer la liste ──
+    if (uploadArea) uploadArea.style.display = 'none';
+    fileList.style.display = 'flex';
+    fileList.style.flexDirection = 'column';
+    fileList.style.gap = '10px';
+    fileList.style.padding = '28px 40px';
 
-    files.forEach((file, index) => {
-      const ext = (file.name || '').split('.').pop().toUpperCase().slice(0, 4);
+    files.forEach((file, idx) => {
+      const ext  = ((file.name || '').split('.').pop() || 'PDF').toUpperCase().slice(0, 4);
       const size = formatFileSize(file.size || 0);
 
       const item = document.createElement('div');
-      item.className = 'file-item fade-up';
+      item.className = 'file-item';
+      item.style.cssText = 'display:flex;align-items:center;gap:12px;padding:14px 16px;border:1.5px solid var(--gray-100);border-radius:12px;background:var(--gray-50);transition:border-color .2s';
       item.innerHTML = `
-        <div class="file-type-icon">${ext}</div>
-        <span class="file-name">${file.name || 'Fichier'}</span>
-        <span class="file-size">${size}</span>
-        <button class="file-remove" data-index="${index}" title="Supprimer">
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M18 6L6 18M6 6l12 12"/>
-          </svg>
-        </button>
-      `;
+        <div class="file-type-icon" style="background:var(--primary-lighter);color:var(--primary);width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0">${ext}</div>
+        <span style="flex:1;font-size:14px;font-weight:500;color:var(--gray-700);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${file.name || 'Fichier'}</span>
+        <span style="font-size:12px;color:var(--gray-400);flex-shrink:0">${size}</span>
+        <button class="rm-btn" data-idx="${idx}" title="Retirer" style="width:28px;height:28px;border-radius:50%;background:transparent;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray-400);transition:all .2s;flex-shrink:0">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>`;
       fileList.appendChild(item);
+
+      // Hover effect
+      item.addEventListener('mouseenter', () => item.style.borderColor = 'var(--primary-light)');
+      item.addEventListener('mouseleave', () => item.style.borderColor = 'var(--gray-100)');
+
+      // Remove btn hover
+      const rmBtn = item.querySelector('.rm-btn');
+      rmBtn.addEventListener('mouseenter', () => { rmBtn.style.background = '#FEE2E2'; rmBtn.style.color = '#DC2626'; });
+      rmBtn.addEventListener('mouseleave', () => { rmBtn.style.background = 'transparent'; rmBtn.style.color = 'var(--gray-400)'; });
+      rmBtn.addEventListener('click', (e) => { e.stopPropagation(); removeFileAt(parseInt(rmBtn.dataset.idx)); });
     });
 
-    // Attach remove handlers
-    fileList.querySelectorAll('.file-remove').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        removeFile(parseInt(btn.dataset.index));
-      });
-    });
-
-    // Show options & action bar
+    // Afficher options + bouton d'action
     const optEl = document.getElementById('tool-options');
     const actEl = document.getElementById('tool-actions');
-    const cntLbl = document.getElementById('file-count-label');
+    const cntEl = document.getElementById('file-count-label');
     if (optEl) optEl.style.display = 'block';
     if (actEl) actEl.style.display = 'flex';
-    if (cntLbl) cntLbl.textContent = `${files.length} fichier${files.length > 1 ? 's' : ''} sélectionné${files.length > 1 ? 's' : ''}`;
+    if (cntEl) cntEl.textContent = `${files.length} fichier${files.length > 1 ? 's' : ''} prêt${files.length > 1 ? 's' : ''}`;
   }
 
-  function removeFile(index) {
-    files.splice(index, 1);
-    window._toolFiles = files;
-    renderFileList();
-  }
-
-  // Reset button (in success state)
+  // Bouton "Réinitialiser" (après succès)
   document.querySelector('.reset-btn')?.addEventListener('click', () => {
-    files = [];
-    window._toolFiles = files;
+    files = []; window._toolFiles = files;
     if (successState) successState.classList.remove('active');
-    if (processingOverlay) processingOverlay.classList.remove('active');
-    bigUpload.style.display = 'block';
-    const optEl = document.getElementById('tool-options');
-    const actEl = document.getElementById('tool-actions');
-    if (optEl) optEl.style.display = 'none';
-    if (actEl) actEl.style.display = 'none';
-    if (fileList) { fileList.classList.remove('has-files'); fileList.innerHTML = ''; }
-    if (progressBar) progressBar.style.width = '0%';
+    if (processingOv) processingOv.classList.remove('active');
+    if (progressBar)  progressBar.style.width = '0%';
+    render();
   });
 };
 
