@@ -376,8 +376,20 @@ const Auth = (() => {
     document.head.appendChild(style);
     // Modal
     document.body.insertAdjacentHTML('beforeend', MODAL_HTML);
-    // Navbar
+    // Navbar desktop
     updateNavbar();
+    // ── Mobile menu buttons ──
+    // Wire any btn-secondary/btn-primary inside .mobile-menu-actions
+    const wireMobileMenu = () => {
+      qa('.mobile-menu-actions button, .mobile-menu button').forEach(btn => {
+        if (!btn.dataset.authWired) {
+          btn.dataset.authWired = '1';
+          if (btn.classList.contains('btn-secondary')) btn.addEventListener('click', () => open('login'));
+          if (btn.classList.contains('btn-primary'))   btn.addEventListener('click', () => open('register'));
+        }
+      });
+    };
+    wireMobileMenu();
     // Close
     q('#auth-close-btn')?.addEventListener('click', close);
     q('#auth-overlay')?.addEventListener('click', (e) => { if (e.target.id === 'auth-overlay') close(); });
