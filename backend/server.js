@@ -40,10 +40,7 @@ const { globalLimiter } = require('./middleware/rateLimit');
 const { startCleanupScheduler } = require('./services/cleanup');
 const { verifyConnection: verifySMTP } = require('./services/mailer');
 
-// ── 2. Initialisation DB ──────────────────────────────────────────
-initDB();
-
-// ── 3. Application Express ────────────────────────────────────────
+// ── 2. Application Express ───────────────────────────────────────
 const app = express();
 
 // ── 4. Trust proxy (Vercel, Nginx, etc.) ─────────────────────────
@@ -200,61 +197,43 @@ app.use((err, req, res, _next) => {
   });
 });
 
-// ── 11. Démarrage ─────────────────────────────────────────────────
-const server = app.listen(PORT, () => {
-  logger.info(`✅ PDFPapers backend démarré`, {
-    port:    PORT,
-    env:     NODE_ENV,
-    pid:     process.pid,
-  });
-
-  // Démarrer le nettoyage automatique des fichiers
-  startCleanupScheduler();
-
-  // Vérifier la connexion SMTP
-  verifySMTP().catch(() => {}); // Non bloquant
-});
-
-// ── 12. Graceful shutdown ─────────────────────────────────────────
-const shutdown = (signal) => {
-  logger.info(`Signal ${signal} reçu — arrêt propre`);
-
-  server.close(() => {
-    logger.info('Connexions HTTP fermées');
-
-    // Fermer SQLite proprement
-    try {
-      const { getDB } = require('./config/db');
-      const db = getDB();
-      if (db && db.open) db.close();
-      logger.info('SQLite fermé');
-    } catch { /* silencieux */ }
-
-    logger.info('Arrêt terminé');
-    process.exit(0);
-  });
-
-  // Forcer l'arrêt après 10 secondes
-  setTimeout(() => {
-    logger.error('Arrêt forcé après timeout');
+// ── 11. Démarrage (async pour attendre la connexion DB) ──────────
+(async () => {
+  try {
+    await initDB(); // Connexion PostgreSQL / Supabase
+  } catch (err) {
+    logger.error('Impossible de démarrer : erreur DB', { error: err.message });
     process.exit(1);
-  }, 10000);
-};
+  }
 
-process.on('SIGTERM', () => shutdown('SIGTERM'));
-process.on('SIGINT',  () => shutdown('SIGINT'));
+  const server = app.listen(PORT, () => {
+    logger.info('✅ PDFPapers backend démarré', { port: PORT, env: NODE_ENV, pid: process.pid });
+    startCleanupScheduler();
+    verifySMTP().catch(() => {});
+  });
 
-// ── 13. Gestion des erreurs non attrapées ─────────────────────────
+  // ── 12. Graceful shutdown ───────────────────────────────────────
+  const shutdown = (signal) => {
+    logger.info(`Signal ${signal} reçu — arrêt propre`);
+    server.close(() => {
+      logger.info('Arrêt terminé');
+      process.exit(0);
+    });
+    setTimeout(() => { logger.error('Arrêt forcé'); process.exit(1); }, 10000);
+  };
+
+  process.on('SIGTERM', () => shutdown('SIGTERM'));
+  process.on('SIGINT',  () => shutdown('SIGINT'));
+})();
+
+// ── 13. Gestion des erreurs non attrapées ────────────────────────
 process.on('uncaughtException', (err) => {
-  logger.error('Exception non attrapée', { error: err.message, stack: err.stack });
-  // Redémarrer proprement (process manager comme PM2 le relancera)
+  console.error('Exception non attrapée', err.message);
   process.exit(1);
 });
 
 process.on('unhandledRejection', (reason) => {
-  logger.error('Promise non gérée', { reason: String(reason) });
-  // Ne pas crasher sur une promise rejetée non gérée en prod
-  if (!IS_PROD) process.exit(1);
+  console.error('Promise non gérée', String(reason));
 });
 
-module.exports = app; // Pour les tests
+module.exports = app;
