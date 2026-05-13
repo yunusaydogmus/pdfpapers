@@ -1,7 +1,3 @@
-# ════════════════════════════════════════════
-# Configuration Railway — PDFPapers Backend
-# ════════════════════════════════════════════
-
 [build]
 builder = "NIXPACKS"
 
