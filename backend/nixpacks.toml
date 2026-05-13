@@ -1,23 +1,11 @@
 # ════════════════════════════════════════════
-# Nixpacks — packages système pour Railway
+# Nixpacks — configuration Railway minimale
+# LibreOffice et Tesseract ajoutés après
+# validation du premier déploiement
 # ════════════════════════════════════════════
-# Installe LibreOffice (conversions Word/Excel/PPT)
-# et Tesseract OCR (reconnaissance de texte)
-
-[phases.setup]
-nixPkgs = [
-  "libreoffice",
-  "tesseract",
-  "tesseract-lang-fra",   # Langue française pour OCR
-  "fontconfig",
-  "freetype",
-]
 
 [phases.install]
 cmds = ["npm ci --production"]
-
-[phases.build]
-cmds = []
 
 [start]
 cmd = "node server.js"

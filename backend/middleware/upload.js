@@ -17,7 +17,7 @@ const multer   = require('multer');
 const path     = require('path');
 const fs       = require('fs');
 const { v4: uuidv4 } = require('uuid');
-const { fromFile } = require('file-type');
+const FileType = require('file-type');
 const { UPLOAD_TMP_DIR, MAX_FILE_SIZE, FILE_TTL_MS, ALLOWED_MIME } = require('../config/constants');
 const { getDB, getStmts } = require('../config/db');
 const logger   = require('../utils/logger');
@@ -95,7 +95,7 @@ const validateFileType = (allowedCategories) => async (req, res, next) => {
   for (const file of req.files) {
     let fileTypeResult;
     try {
-      fileTypeResult = await fromFile(file.path);
+      fileTypeResult = await FileType.fromFile(file.path);
     } catch (e) {
       return rejectFile(file, 'Impossible de lire le fichier.');
     }
