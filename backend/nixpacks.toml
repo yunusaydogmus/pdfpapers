@@ -1,11 +1,5 @@
-# ════════════════════════════════════════════
-# Nixpacks — configuration Railway minimale
-# LibreOffice et Tesseract ajoutés après
-# validation du premier déploiement
-# ════════════════════════════════════════════
-
 [phases.install]
-cmds = ["npm ci --production"]
+cmds = ["npm install --omit=dev --no-audit --no-fund"]
 
 [start]
 cmd = "node server.js"

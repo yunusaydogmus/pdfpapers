@@ -8,9 +8,11 @@ Thumbs.db
 *.swp
 *.swo
 
-# Dependencies (si npm utilisé plus tard)
+# Dependencies
 node_modules/
+# package-lock.json ignoré à la racine mais autorisé dans backend/
 package-lock.json
+!backend/package-lock.json
 
 # Build
 dist/
