@@ -21,11 +21,15 @@ module.exports = {
   JWT_REFRESH_EXPIRY: process.env.JWT_REFRESH_EXPIRY || '7d',
 
   // ── Base de données
+  // Sur Railway : DB_PATH=/data/pdfpapers.db (volume persistant monté sur /data)
+  // En local    : ./data/pdfpapers.db
   DB_PATH: process.env.DB_PATH
     ? path.resolve(process.env.DB_PATH)
     : path.join(__dirname, '../data/pdfpapers.db'),
 
-  // ── Fichiers
+  // ── Fichiers temporaires
+  // Sur Railway : UPLOAD_TMP_DIR=/data/tmp (même volume persistant)
+  // En local    : ./tmp
   UPLOAD_TMP_DIR: process.env.UPLOAD_TMP_DIR
     ? path.resolve(process.env.UPLOAD_TMP_DIR)
     : path.join(__dirname, '../tmp'),

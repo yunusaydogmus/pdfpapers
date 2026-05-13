@@ -1,0 +1,23 @@
+# ════════════════════════════════════════════
+# Nixpacks — packages système pour Railway
+# ════════════════════════════════════════════
+# Installe LibreOffice (conversions Word/Excel/PPT)
+# et Tesseract OCR (reconnaissance de texte)
+
+[phases.setup]
+nixPkgs = [
+  "libreoffice",
+  "tesseract",
+  "tesseract-lang-fra",   # Langue française pour OCR
+  "fontconfig",
+  "freetype",
+]
+
+[phases.install]
+cmds = ["npm ci --production"]
+
+[phases.build]
+cmds = []
+
+[start]
+cmd = "node server.js"
